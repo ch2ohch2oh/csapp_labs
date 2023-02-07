@@ -1,4 +1,5 @@
-Slides: https://www.cs.wm.edu/~liqun/teaching/cs304/cs304_15f/labs/bomblab.pdf
+Slides
+    https://www.cs.wm.edu/~liqun/teaching/cs304/cs304_15f/labs/bomblab.pdf
 
 Phase 1
 =======
@@ -56,3 +57,74 @@ Actually it is an address table
     0x4024a0:       0x9f    0x0f    0x40    0x00    0x00    0x00    0x00    0x00
     0x4024a8:       0xa6    0x0f    0x40    0x00    0x00    0x00    0x00    0x00
 
+Phase 4
+=======
+
+sscanf is reading in 2 numbers
+
+    (gdb) x/s 0x4025cf
+    0x4025cf:       "%d %d"
+
+1st number is written to 0x8(%rsp) == some number between 0 and 14
+2nd number is written to 0xc(%rsp) == 0
+
+1st number <= 0xe = 14
+
+call func4(x1, 0, 14)
+
+int func4(int edi, int esi, int edx) {
+    int eax = edx - esi;
+    // int ecx = eax >> 31;
+    ecx = 0;
+    // eax += ecx;
+    // eax >>= 1; 14 // 2 = 7
+    eax = 7;
+    ecx = eax + esi; // ecx is the midpoint = 7
+    if(ecx <= edi) {
+        eax = 0;
+        if(ecx >= edi) {
+            return 0;
+        } else {
+            esi = ecx + 1;
+            eax = func4(edi, esi, edx);
+            eax = 1 + 2 * eax;
+        }
+    } else {
+        edx = -1 + ecx;
+        eax = func4(edi, esi, edx);
+        eax *= 2;
+    }
+    return eax;
+}
+
+
+Phase 5
+=======
+
+Input string length has to be 6.
+
+The string accessed at addr 0x401099
+
+    (gdb) x/s 0x4024b0
+    0x4024b0 <array.3449>:  "maduiersnfotvbylSo you think you can stop the bomb with ctrl-c, do you?"
+
+The string at 0x40245e
+
+    (gdb) x/s 0x40245e
+    0x40245e:       "flyers"
+
+Lower 8 bits of input chars should be
+
+    9       -> i
+    15      -> o
+    14      -> n
+    5       -> e
+    6       -> f
+    7       -> g
+
+
+Phase 6
+=======
+
+Way too difficult. 
+Based on google search, it seems to be a linked list function.
