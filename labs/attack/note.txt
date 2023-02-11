@@ -76,3 +76,27 @@ Breakpoint 1, getbuf () at buf.c:12
 rsp            0x5561dca0          0x5561dca0
 
 
+Phase 4
+=======
+
+00000000004017ec <touch2>:
+
+1st gadget => popq %rax
+
+  58
+
+90 is no-op.
+
+00000000004019a7 <addval_219>:
+  4019a7:	8d 87 51 73 58 90    	lea    -0x6fa78caf(%rdi),%eax
+  4019ad:	c3  
+
+
+2nd gadget => movq %rax, %rdi
+
+  48 89 c7
+
+00000000004019a0 <addval_273>:
+  4019a0:	8d 87 48 89 c7 c3    	lea    -0x3c3876b8(%rdi),%eax
+  4019a6:	c3           
+
